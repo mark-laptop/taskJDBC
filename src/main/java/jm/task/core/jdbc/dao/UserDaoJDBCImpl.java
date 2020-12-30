@@ -33,7 +33,7 @@ public class UserDaoJDBCImpl implements UserDao {
              PreparedStatement preparedStatement = connection.prepareStatement(CREATE_TABLE_USER)) {
             preparedStatement.execute();
         } catch (SQLException cause) {
-            throw new RuntimeException("", cause);
+            throw new RuntimeException("Create table error", cause);
         }
     }
 
@@ -42,7 +42,7 @@ public class UserDaoJDBCImpl implements UserDao {
              PreparedStatement preparedStatement = connection.prepareStatement(DROP_TABLE_USER)) {
             preparedStatement.execute();
         } catch (SQLException cause) {
-            throw new RuntimeException("", cause);
+            throw new RuntimeException("Drop table error", cause);
         }
     }
 
@@ -54,7 +54,7 @@ public class UserDaoJDBCImpl implements UserDao {
             preparedStatement.setByte(3, age);
             preparedStatement.executeUpdate();
         } catch (SQLException cause) {
-            throw new RuntimeException("", cause);
+            throw new RuntimeException("Save user error", cause);
         }
     }
 
@@ -64,7 +64,7 @@ public class UserDaoJDBCImpl implements UserDao {
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException cause) {
-            throw new RuntimeException("", cause);
+            throw new RuntimeException("Remove user by id error", cause);
         }
     }
 
@@ -82,7 +82,7 @@ public class UserDaoJDBCImpl implements UserDao {
                 users.add(user);
             }
         } catch (SQLException cause) {
-            throw new RuntimeException("", cause);
+            throw new RuntimeException("Get all users error", cause);
         }
         return users;
     }
@@ -92,7 +92,7 @@ public class UserDaoJDBCImpl implements UserDao {
              PreparedStatement preparedStatement = connection.prepareStatement(CLEAN_TABLE_USER)) {
             preparedStatement.execute();
         } catch (SQLException cause) {
-            throw new RuntimeException("", cause);
+            throw new RuntimeException("Clean table error", cause);
         }
     }
 }

@@ -29,42 +29,98 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public void createUsersTable() {
         dropUsersTable();
-        try (Connection connection = Util.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(CREATE_TABLE_USER)) {
+        Connection connection = Util.getConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(CREATE_TABLE_USER)) {
+            connection.setAutoCommit(false);
             preparedStatement.execute();
+            connection.commit();
         } catch (SQLException cause) {
-            throw new RuntimeException("Create table error", cause);
+            RuntimeException create_table_error = new RuntimeException("Create table error", cause);
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                create_table_error.addSuppressed(ex);
+            }
+            throw create_table_error;
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException ignore) {}
+            }
         }
     }
 
     public void dropUsersTable() {
-        try (Connection connection = Util.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(DROP_TABLE_USER)) {
+        Connection connection = Util.getConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(DROP_TABLE_USER)) {
+            connection.setAutoCommit(false);
             preparedStatement.execute();
+            connection.commit();
         } catch (SQLException cause) {
-            throw new RuntimeException("Drop table error", cause);
+            RuntimeException drop_table_error = new RuntimeException("Drop table error", cause);
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                drop_table_error.addSuppressed(ex);
+            }
+            throw drop_table_error;
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException ignore) {}
+            }
         }
     }
 
     public void saveUser(String name, String lastName, byte age) {
-        try (Connection connection = Util.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SAVE_USER)) {
+        Connection connection = Util.getConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SAVE_USER)) {
+            connection.setAutoCommit(false);
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, lastName);
             preparedStatement.setByte(3, age);
             preparedStatement.executeUpdate();
+            connection.commit();
         } catch (SQLException cause) {
-            throw new RuntimeException("Save user error", cause);
+            RuntimeException save_user_error = new RuntimeException("Save user error", cause);
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                save_user_error.addSuppressed(ex);
+            }
+            throw save_user_error;
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException ignore) {}
+            }
         }
     }
 
     public void removeUserById(long id) {
-        try (Connection connection = Util.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(REMOVE_USER_BY_ID)) {
+        Connection connection = Util.getConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(REMOVE_USER_BY_ID)) {
+            connection.setAutoCommit(false);
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
+            connection.commit();
         } catch (SQLException cause) {
-            throw new RuntimeException("Remove user by id error", cause);
+            RuntimeException remove_user_by_id_error = new RuntimeException("Remove user by id error", cause);
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                remove_user_by_id_error.addSuppressed(ex);
+            }
+            throw remove_user_by_id_error;
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException ignore) {}
+            }
         }
     }
 
@@ -72,6 +128,7 @@ public class UserDaoJDBCImpl implements UserDao {
         List<User> users = new ArrayList<>();
         try (Connection connection = Util.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_USER)) {
+            connection.setReadOnly(true);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 User user = new User();
@@ -88,11 +145,25 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void cleanUsersTable() {
-        try (Connection connection = Util.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(CLEAN_TABLE_USER)) {
+        Connection connection = Util.getConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(CLEAN_TABLE_USER)) {
+            connection.setAutoCommit(false);
             preparedStatement.execute();
+            connection.commit();
         } catch (SQLException cause) {
-            throw new RuntimeException("Clean table error", cause);
+            RuntimeException clean_table_error = new RuntimeException("Clean table error", cause);
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                clean_table_error.addSuppressed(ex);
+            }
+            throw clean_table_error;
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException ignore) {}
+            }
         }
     }
 }

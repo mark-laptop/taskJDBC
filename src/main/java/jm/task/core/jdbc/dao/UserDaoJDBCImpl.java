@@ -35,13 +35,13 @@ public class UserDaoJDBCImpl implements UserDao {
             preparedStatement.execute();
             connection.commit();
         } catch (SQLException cause) {
-            RuntimeException create_table_error = new RuntimeException("Create table error", cause);
+            RuntimeException createTableError = new RuntimeException("Create table error", cause);
             try {
                 connection.rollback();
             } catch (SQLException ex) {
-                create_table_error.addSuppressed(ex);
+                createTableError.addSuppressed(ex);
             }
-            throw create_table_error;
+            throw createTableError;
         } finally {
             if (connection != null) {
                 try {
@@ -58,13 +58,13 @@ public class UserDaoJDBCImpl implements UserDao {
             preparedStatement.execute();
             connection.commit();
         } catch (SQLException cause) {
-            RuntimeException drop_table_error = new RuntimeException("Drop table error", cause);
+            RuntimeException dropTableError = new RuntimeException("Drop table error", cause);
             try {
                 connection.rollback();
             } catch (SQLException ex) {
-                drop_table_error.addSuppressed(ex);
+                dropTableError.addSuppressed(ex);
             }
-            throw drop_table_error;
+            throw dropTableError;
         } finally {
             if (connection != null) {
                 try {
@@ -84,13 +84,13 @@ public class UserDaoJDBCImpl implements UserDao {
             preparedStatement.executeUpdate();
             connection.commit();
         } catch (SQLException cause) {
-            RuntimeException save_user_error = new RuntimeException("Save user error", cause);
+            RuntimeException saveUserError = new RuntimeException("Save user error", cause);
             try {
                 connection.rollback();
             } catch (SQLException ex) {
-                save_user_error.addSuppressed(ex);
+                saveUserError.addSuppressed(ex);
             }
-            throw save_user_error;
+            throw saveUserError;
         } finally {
             if (connection != null) {
                 try {
@@ -108,13 +108,13 @@ public class UserDaoJDBCImpl implements UserDao {
             preparedStatement.executeUpdate();
             connection.commit();
         } catch (SQLException cause) {
-            RuntimeException remove_user_by_id_error = new RuntimeException("Remove user by id error", cause);
+            RuntimeException removeUserByIdError = new RuntimeException("Remove user by id error", cause);
             try {
                 connection.rollback();
             } catch (SQLException ex) {
-                remove_user_by_id_error.addSuppressed(ex);
+                removeUserByIdError.addSuppressed(ex);
             }
-            throw remove_user_by_id_error;
+            throw removeUserByIdError;
         } finally {
             if (connection != null) {
                 try {
@@ -151,13 +151,13 @@ public class UserDaoJDBCImpl implements UserDao {
             preparedStatement.execute();
             connection.commit();
         } catch (SQLException cause) {
-            RuntimeException clean_table_error = new RuntimeException("Clean table error", cause);
+            RuntimeException cleanTableError = new RuntimeException("Clean table error", cause);
             try {
                 connection.rollback();
             } catch (SQLException ex) {
-                clean_table_error.addSuppressed(ex);
+                cleanTableError.addSuppressed(ex);
             }
-            throw clean_table_error;
+            throw cleanTableError;
         } finally {
             if (connection != null) {
                 try {
